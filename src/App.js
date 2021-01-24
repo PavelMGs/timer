@@ -102,7 +102,9 @@ const App = () => {
   const handleReset = () => {
     Sub.unsubscribe()
     setCurrentTap(0);
-    setSeconds(0)
+    setSeconds(0);
+    setMinutes(0);
+    setHours(0);
     setSub(stream$
       .subscribe({
         next: (v) => {
