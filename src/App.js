@@ -26,7 +26,7 @@ const App = () => {
           setIsRunning(true);
           setSub(stream$
           .subscribe({
-            next: (v) => {setCurrentTap(v);
+            next: (v) => {setCurrentTap(v + 1);
               const val = v + 1;
               if(val < 60) {
                 setSeconds(val)
@@ -83,7 +83,7 @@ const App = () => {
     setSub(stream$
     .subscribe({
       next: (v) => {
-        setCurrentTap(v + currentTap);
+        setCurrentTap(v + currentTap + 1);
         const val = v + currentTap + 1;
         if(val < 60) {
           setSeconds(val)
