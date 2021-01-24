@@ -6,8 +6,6 @@ import { take, tap } from 'rxjs/operators'
 
 const App = () => {
   const [seconds, setSeconds] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [hours, setHours] = useState(0);
   const [labelStart, setlabelStart] = useState('START')
   const [currentTap, setCurrentTap] = useState(0);
   const [debounce, setDebounce] = useState(false); 
@@ -27,18 +25,7 @@ const App = () => {
           setSub(stream$
           .subscribe({
             next: (v) => {setCurrentTap(v + 1);
-              const val = v + 1;
-              if(val < 60) {
-                setSeconds(val)
-              } else if(val >= 60 && val < 3600) {
-                setSeconds(Math.floor(val % 60));
-                setMinutes(Math.floor(val / 60));
-              } else if(val >= 3600) {
-                setSeconds(Math.floor(val % 3600));
-                setMinutes(Math.floor(val % 60));
-                setHours(Math.floor(val / 3600));
-              }
-            }
+            setSeconds(v + 1);}
           }))
         break;  
 
@@ -47,8 +34,6 @@ const App = () => {
           Sub.unsubscribe()
           setIsRunning(false)
           setSeconds(0);
-          setMinutes(0);
-          setHours(0);
           break;
 
         default: setIsRunning(false)
@@ -84,17 +69,7 @@ const App = () => {
     .subscribe({
       next: (v) => {
         setCurrentTap(v + currentTap + 1);
-        const val = v + currentTap + 1;
-        if(val < 60) {
-          setSeconds(val)
-        } else if(val >= 60 && val < 3600) {
-          setSeconds(Math.floor(val % 60));
-          setMinutes(Math.floor(val / 60));
-        } else if(v >= 3600) {
-          setSeconds(Math.floor(val % 3600));
-          setMinutes(Math.floor(val % 60));
-          setHours(Math.floor(val / 3600));
-        }
+        setSeconds(v + currentTap + 1)
       }
     }))
   }
@@ -103,46 +78,33 @@ const App = () => {
     Sub.unsubscribe()
     setCurrentTap(0);
     setSeconds(0);
-    setMinutes(0);
-    setHours(0);
+    // setMinutes(0);
+    // setHours(0);
     setSub(stream$
       .subscribe({
         next: (v) => {
-          const val = v + 1;
-          if(val < 60) {
-            setSeconds(val)
-          } else if(val >= 60 && val < 3600) {
-            setSeconds(Math.floor(val % 60));
-            setMinutes(Math.floor(val / 60));
-          } else if(v >= 3600) {
-            setSeconds(Math.floor(val % 3600));
-            setMinutes(Math.floor(val % 60));
-            setHours(Math.floor(val / 3600));
-          }
+          setSeconds(v + 1);
         }
       }))
   } 
 
   const stream$ = interval(1000)
+  
   .pipe(
     tap((v) => {
       setCurrentTap(v);
     }),
     
   );
+
+  const date = new Date(0, 0, 0, 0, 0, seconds);
+  const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' }
+  const time = Intl.DateTimeFormat('ru', timeOptions).format(date);
   return (
     <div className={s.root}>
 
       <div className={s.timer}>
-        {
-          hours < 10 ? `0${hours}` : hours
-        } : 
-        {
-          minutes < 10 ? ` 0${minutes}` : ` ${minutes}`
-        } : 
-        {
-          seconds < 10 ? ` 0${seconds}` : ` ${seconds}`
-        }
+        {time}
       </div>
 
       <div className={s.controls}>
