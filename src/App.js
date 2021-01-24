@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import s from './App.module.scss';
 
 import { interval } from 'rxjs'
-import { take, tap } from 'rxjs/operators'
+import { take } from 'rxjs/operators'
 
 const App = () => {
   const [seconds, setSeconds] = useState(0);
-  const [labelStart, setlabelStart] = useState('START')
-  const [currentTap, setCurrentTap] = useState(0);
+  const [labelStart, setLabelStart] = useState('START');
   const [debounce, setDebounce] = useState(false); 
   const [paused, setPaused] = useState(false);
 
@@ -20,17 +19,17 @@ const App = () => {
 
       switch(action) {
         case 'start':
-          setlabelStart('STOP');
+          setLabelStart('STOP');
           setIsRunning(true);
           setSub(stream$
           .subscribe({
-            next: (v) => {setCurrentTap(v + 1);
+            next: (v) => {
             setSeconds(v + 1);}
           }))
         break;  
 
         case 'stop': 
-        setlabelStart('START')
+        setLabelStart('START')
           Sub.unsubscribe()
           setIsRunning(false)
           setSeconds(0);
@@ -41,7 +40,7 @@ const App = () => {
   }
 
   const handleWait = () => {
-    setlabelStart('START')
+    setLabelStart('START')
     Sub.unsubscribe();
     setDebounce(false);
     setIsRunning(false);
@@ -63,23 +62,19 @@ const App = () => {
 
   const handleAfterPause = () => {
     setPaused(false);
-    setlabelStart('STOP');
+    setLabelStart('STOP');
     setIsRunning(true);
     setSub(stream$
     .subscribe({
       next: (v) => {
-        setCurrentTap(v + currentTap + 1);
-        setSeconds(v + currentTap + 1)
+        setSeconds(v + seconds + 1)
       }
     }))
   }
 
   const handleReset = () => {
     Sub.unsubscribe()
-    setCurrentTap(0);
     setSeconds(0);
-    // setMinutes(0);
-    // setHours(0);
     setSub(stream$
       .subscribe({
         next: (v) => {
@@ -89,13 +84,6 @@ const App = () => {
   } 
 
   const stream$ = interval(1000)
-  
-  .pipe(
-    tap((v) => {
-      setCurrentTap(v);
-    }),
-    
-  );
 
   const date = new Date(0, 0, 0, 0, 0, seconds);
   const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' }
