@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import s from './App.module.scss';
 
-import { interval, Observable } from 'rxjs'
+import { interval } from 'rxjs'
 import { take } from 'rxjs/operators'
 import New from './New/New';
 
