@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import s from './App.module.scss';
 
-import { interval } from 'rxjs'
+import { interval, Observable } from 'rxjs'
 import { take } from 'rxjs/operators'
+import New from './New/New';
+
 
 const App = () => {
   const [seconds, setSeconds] = useState(0);
@@ -82,6 +84,7 @@ const App = () => {
         }
       }))
   } 
+  
 
   const stream$ = interval(1000)
 
@@ -125,6 +128,7 @@ const App = () => {
         </button>
       </div>
 
+      <New />
     </div>
   )
 }
