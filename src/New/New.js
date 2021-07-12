@@ -1,8 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import { Observable } from 'rxjs';
 import s from './New.module.scss';
-
-
 
 const New = () => {
     const [seconds, setSeconds] = useState(0);
